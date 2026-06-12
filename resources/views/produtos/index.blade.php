@@ -22,42 +22,75 @@
 
             <!-- Filtros e Busca -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mb-6">
-                <form method="GET" action="{{ route('produtos.index') }}" class="flex flex-col md:flex-row gap-4">
-                    <div class="flex-1">
-                        <input type="text" name="search" value="{{ request('search') }}" 
-                               placeholder="Buscar por nome do produto..." 
-                               class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                <form method="GET" action="{{ route('produtos.index') }}" class="flex flex-col gap-4">
+                    <!-- Linha 1: Busca e Loja -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <input type="text" name="search" value="{{ request('search') }}" 
+                                   placeholder="Buscar por nome do produto..." 
+                                   class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <select name="loja" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Todas as lojas</option>
+                                @foreach($lojas as $loja)
+                                    <option value="{{ $loja->id }}" {{ request('loja') == $loja->id ? 'selected' : '' }}>
+                                        {{ $loja->nome }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                    <div class="w-full md:w-48">
-                        <select name="loja" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">Todas as lojas</option>
-                            @foreach($lojas as $loja)
-                                <option value="{{ $loja->id }}" {{ request('loja') == $loja->id ? 'selected' : '' }}>
-                                    {{ $loja->nome }}
-                                </option>
-                            @endforeach
-                        </select>
+                    
+                    <!-- Linha 2: Preço Mínimo e Preço Máximo -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <input type="number" name="preco_min" value="{{ request('preco_min') }}" 
+                                   placeholder="Preço mínimo (Kz)" step="0.01"
+                                   class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <input type="number" name="preco_max" value="{{ request('preco_max') }}" 
+                                   placeholder="Preço máximo (Kz)" step="0.01"
+                                   class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        </div>
                     </div>
-                    <div class="w-full md:w-48">
-                        <select name="ordenar" class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="nome_asc" {{ request('ordenar') == 'nome_asc' ? 'selected' : '' }}>Nome (A-Z)</option>
-                            <option value="nome_desc" {{ request('ordenar') == 'nome_desc' ? 'selected' : '' }}>Nome (Z-A)</option>
-                            <option value="preco_asc" {{ request('ordenar') == 'preco_asc' ? 'selected' : '' }}>Preço (menor-maior)</option>
-                            <option value="preco_desc" {{ request('ordenar') == 'preco_desc' ? 'selected' : '' }}>Preço (maior-menor)</option>
-                            <option value="quantidade_asc" {{ request('ordenar') == 'quantidade_asc' ? 'selected' : '' }}>Quantidade (menor-maior)</option>
-                            <option value="quantidade_desc" {{ request('ordenar') == 'quantidade_desc' ? 'selected' : '' }}>Quantidade (maior-menor)</option>
-                            <option value="recentes" {{ request('ordenar') == 'recentes' ? 'selected' : '' }}>Mais recentes</option>
-                            <option value="antigos" {{ request('ordenar') == 'antigos' ? 'selected' : '' }}>Mais antigos</option>
-                        </select>
+                    
+                    <!-- Linha 3: Apenas em Stock, Ordenação e Botões -->
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <!-- Checkbox Apenas em Stock -->
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" name="apenas_em_stock" value="1" 
+                                       {{ request('apenas_em_stock') ? 'checked' : '' }}
+                                       class="rounded border-gray-300 text-blue-500 focus:ring-blue-500">
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Apenas produtos em stock</span>
+                            </label>
+                            
+                            <!-- Ordenação -->
+                            <select name="ordenar" class="rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                                <option value="recentes" {{ request('ordenar') == 'recentes' ? 'selected' : '' }}>Mais recentes</option>
+                                <option value="antigos" {{ request('ordenar') == 'antigos' ? 'selected' : '' }}>Mais antigos</option>
+                                <option value="nome_asc" {{ request('ordenar') == 'nome_asc' ? 'selected' : '' }}>Nome (A-Z)</option>
+                                <option value="nome_desc" {{ request('ordenar') == 'nome_desc' ? 'selected' : '' }}>Nome (Z-A)</option>
+                                <option value="preco_asc" {{ request('ordenar') == 'preco_asc' ? 'selected' : '' }}>Preço (menor-maior)</option>
+                                <option value="preco_desc" {{ request('ordenar') == 'preco_desc' ? 'selected' : '' }}>Preço (maior-menor)</option>
+                                <option value="quantidade_asc" {{ request('ordenar') == 'quantidade_asc' ? 'selected' : '' }}>Quantidade (menor-maior)</option>
+                                <option value="quantidade_desc" {{ request('ordenar') == 'quantidade_desc' ? 'selected' : '' }}>Quantidade (maior-menor)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                                Filtrar
+                            </button>
+                            @if(request('search') || request('loja') || request('preco_min') || request('preco_max') || request('apenas_em_stock') || request('ordenar'))
+                                <a href="{{ route('produtos.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors duration-200">
+                                    Limpar
+                                </a>
+                            @endif
+                        </div>
                     </div>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors duration-200">
-                        Filtrar
-                    </button>
-                    @if(request('search') || request('loja') || request('ordenar'))
-                        <a href="{{ route('produtos.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors duration-200 text-center">
-                            Limpar
-                        </a>
-                    @endif
                 </form>
             </div>
 
