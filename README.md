@@ -1,173 +1,90 @@
-# 1. Clonar o repositório
+🛍️ Lojafacil
+
+Sistema completo de gerenciamento de lojas e produtos desenvolvido com Laravel.
+🚀 Requisitos Prévios
+
+    PHP >= 8.0
+
+    Composer
+
+    Node.js & NPM
+
+    MySQL/MariaDB
+
+📦 Instalação
+Configuração inicial
+# Clonar o repositório
 git clone https://github.com/seu-usuario/lojafacil.git
 cd lojafacil
 
-# 2. Instalar dependências PHP
+# Instalar dependências PHP
 composer install
 
-# 3. Instalar dependências Node.js
+# Instalar dependências Node.js
 npm install
 
-# 4. Configurar arquivo de ambiente
+# Configurar ambiente
 cp .env.example .env
-
-# 5. Gerar chave da aplicação
 php artisan key:generate
-
-# 6. Configurar o banco de dados no arquivo .env
-# DB_DATABASE=lojafacil
-# DB_USERNAME=root
-# DB_PASSWORD=sua_senha
-
-# 7. Executar migrations e seeders
-php artisan migrate --seed
-
-# 8. Criar link simbólico para uploads
-php artisan storage:link
-
-# 9. Compilar assets
-npm run build
-
-# 10. Iniciar servidor (em outro terminal)
-php artisan serve
-
-# 1. Clonar o repositório
-git clone https://github.com/seu-usuario/lojafacil.git
-cd lojafacil
-
-# 2. Instalar dependências PHP
-composer install
-
-# 3. Instalar dependências Node.js
-npm install
-
-# 4. Configurar arquivo de ambiente
-cp .env.example .env
-
-# 5. Gerar chave da aplicação
-php artisan key:generate
-
-# 6. Configurar o banco de dados no arquivo .env
-# DB_DATABASE=lojafacil
-# DB_USERNAME=root
-# DB_PASSWORD=sua_senha
-
-# 7. Executar migrations e seeders
-php artisan migrate --seed
-
-# 8. Criar link simbólico para uploads
-php artisan storage:link
-
-# 9. Compilar assets
-npm run build
-
-# 10. Iniciar servidor (em outro terminal)
-php artisan serve
-
-# Para desenvolvimento com hot
-npm run dev
-
-# Crie o banco de dados manualmente antes de executar as migrations:
-CREATE DATABASE lojafacil CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 📁 Estrutura do Projeto
+
 lojafacil/
 ├── app/
 │   ├── Http/
-│   │   ├── Controllers/     # Controladores da aplicação
+│   │   ├── Controllers/          # Controladores
 │   │   │   ├── LojaController.php
 │   │   │   └── ProdutosController.php
-│   │   ├── Middleware/      # Middlewares
-│   │   └── Requests/        # Form Requests (validações)
-│   ├── Models/              # Modelos Eloquent
+│   │   ├── Middleware/           # Middlewares
+│   │   └── Requests/             # Validações
+│   ├── Models/                   # Modelos Eloquent
 │   │   ├── User.php
 │   │   ├── Loja.php
 │   │   └── Produto.php
-│   └── Policies/            # Políticas de autorização
-│       ├── LojaPolicy.php
-│       └── ProdutoPolicy.php
+│   └── Policies/                 # Autorizações
 ├── database/
-│   ├── factories/           # Factories para testes
-│   │   ├── LojaFactory.php
-│   │   └── ProdutoFactory.php
-│   ├── migrations/          # Migrations do banco
-│   └── seeders/             # Seeders para dados iniciais
-│       ├── DatabaseSeeder.php
-│       ├── LojaSeeder.php
-│       └── ProdutoSeeder.php
-├── public/
-│   └── storage/             # Arquivos de upload (fotos)
-├── resources/
-│   └── views/               # Templates Blade
-│       ├── loja/            # Views de lojas
-│       │   ├── index.blade.php
-│       │   ├── create.blade.php
-│       │   ├── show.blade.php
-│       │   └── edit.blade.php
-│       ├── produtos/        # Views de produtos
-│       │   ├── index.blade.php
-│       │   ├── create.blade.php
-│       │   ├── show.blade.php
-│       │   └── edit.blade.php
-│       ├── auth/            # Views de autenticação
-│       ├── components/      # Componentes reutilizáveis
-│       └── dashboard.blade.php
-├── routes/
-│   └── web.php              # Rotas da aplicação
-└── .env.example             # Exemplo de configuração
+│   ├── factories/                # Factories
+│   ├── migrations/               # Migrations
+│   └── seeders/                  # Seeders
+├── public/storage/               # Uploads
+├── resources/views/              # Templates Blade
+│   ├── loja/                     # CRUD Lojas
+│   ├── produtos/                 # CRUD Produtos
+│   ├── auth/                     # Autenticação
+│   └── components/               # Componentes UI
+└── routes/web.php                # Rotas
 
-O sistema inclui seeders que geram dados automaticamente:
-# Executar todos os seeders
-php artisan db:seed
+Banco de Dados
+bash
 
-# Executar seeder específico
-php artisan db:seed --class=LojaSeeder
-php artisan db:seed --class=ProdutoSeeder
+php artisan migrate:fresh --seed    # ⚠️ RECRIA o banco (apaga dados)
 
-# Comandos Úteis
+Criar Usuário Manualmente
+bash
 
-# Iniciar servidor
-php artisan serve
-
-# Compilar assets (desenvolvimento)
-npm run dev
-
-# Compilar assets (produção)
-npm run build
-
-# Limpar cache
-php artisan cache:clear
-php artisan config:clear
-php artisan view:clear
-
-# Recriar banco do zero (ATENÇÃO: apaga todos os dados)
-php artisan migrate:fresh --seed
-
-# Criar usuário manualmente
 php artisan tinker
-> App\Models\User::create([
+>>> App\Models\User::create([
     'name' => 'Admin',
-    'email' => 'admin@teste.com',
+    'email' => 'admin@teste.com', 
     'password' => bcrypt('password')
-  ])
+])
 
-  📄 Licença
+🛠️ Tecnologias
 
-Este projeto está sob a licença MIT.
-✨ Agradecimentos
-
-    Laravel - Framework incrível
+    Laravel - Framework PHP
 
     Tailwind CSS - Framework CSS
 
     Chart.js - Biblioteca de gráficos
 
+📄 Licença
 
-📞 Contacto
+MIT License © 2024
+👨‍💻 Desenvolvimento
 
-    Desenvolvido por: Ezequiel Francisco
+Ezequiel Francisco
 
-    Desafio Técnico: Mamute Africano
-    
+<div align="center">
 
-⭐ Se gostou do projeto, deixe uma estrela no GitHub!
+⭐ Se este projeto te ajudou, considere deixar uma estrela! ⭐
+</div>

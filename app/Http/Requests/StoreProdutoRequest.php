@@ -28,6 +28,7 @@ class StoreProdutoRequest extends FormRequest
             'categoria' => 'nullable|string|max:100',
             'sku' => 'nullable|string|unique:produtos,sku',
             'descricao' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 
@@ -45,6 +46,9 @@ class StoreProdutoRequest extends FormRequest
             'quantidade.required' => 'A quantidade é obrigatória.',
             'quantidade.min' => 'A quantidade não pode ser negativa.',
             'sku.unique' => 'Este SKU já está em uso.',
+            'foto.image' => 'O arquivo deve ser uma imagem.',
+            'foto.mimes' => 'Formatos permitidos: JPG, JPEG, PNG, WEBP.',
+            'foto.max' => 'A imagem não pode exceder 2MB.',
         ];
     }
 }

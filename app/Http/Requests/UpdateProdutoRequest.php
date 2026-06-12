@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Produtos;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,18 +11,22 @@ class UpdateProdutoRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
+   
     public function authorize(): bool
     {
-        $produto = $this->route('produto');
-        return Auth::check() && $produto && $produto->loja->user_id === Auth::id();
-    }
+        $produto = Produtos::find($this->route('produto'));
 
+        return Auth::check()
+            && $produto
+            && $produto->loja
+            && $produto->loja->user_id === Auth::id();
+    }
     /**
      * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
-        $produtoId = $this->route('produto')->id ?? 'NULL';
+        $produtoId = $this->route('produto') ?? 'NULL';
         
         return [
             'nome' => 'required|string|max:255',
@@ -31,6 +36,7 @@ class UpdateProdutoRequest extends FormRequest
             'categoria' => 'nullable|string|max:100',
             'sku' => 'nullable|string|unique:produtos,sku,' . $produtoId,
             'descricao' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 
@@ -48,6 +54,9 @@ class UpdateProdutoRequest extends FormRequest
             'quantidade.required' => 'A quantidade é obrigatória.',
             'quantidade.min' => 'A quantidade não pode ser negativa.',
             'sku.unique' => 'Este SKU já está em uso.',
+            'foto.image' => 'O arquivo deve ser uma imagem.',
+            'foto.mimes' => 'Formatos permitidos: JPG, JPEG, PNG, WEBP.',
+            'foto.max' => 'A imagem não pode exceder 2MB.',
         ];
     }
 }

@@ -86,6 +86,14 @@
                             <x-input-error :messages="$errors->get('descricao')" class="mt-2" />
                         </div>
                     </div>
+                    <!-- Dentro do form, depois do campo descricao ou antes dos botões -->
+                    <div class="col-span-1 md:col-span-2">
+                        <x-input-label for="foto" :value="__('Foto do Produto')" />
+                        <input type="file" id="foto" name="foto" accept="image/*"
+                               class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Formatos: JPG, PNG, WEBP. Máximo 2MB.</p>
+                        <x-input-error :messages="$errors->get('foto')" class="mt-2" />
+                    </div>
 
                     <!-- Botões -->
                     <div class="flex items-center justify-end gap-3 mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">

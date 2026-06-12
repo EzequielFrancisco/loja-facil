@@ -203,34 +203,20 @@ class ProdutosController extends Controller
         }
     }*/
 
-    public function destroy($id){
-        try {
-            $produto = Produtos::findOrFail($id);
-            
-            // Verificar se o produto pertence ao usuário
-            if ($produto->loja->user_id !== Auth::id()) {
-                return redirect()->route('produtos.index')
-                    ->with('error', 'Você não tem permissão para excluir este produto.');
-            }
-            
-            $produto->delete();
-            
-            return redirect()->route('produtos.index')
-                ->with('success', 'Produto removido com sucesso!');
-                
-        } catch (Exception $e) {
-            return redirect()->route('produtos.index')
-                ->with('error', 'Erro ao remover produto: ' . $e->getMessage());
-        }
-    }
-
     public function store(StoreProdutoRequest $request){
+
         try {
             $validated = $request->validated();
             
             $loja = Loja::findOrFail($validated['loja_id']);
             if ($loja->user_id !== Auth::id()) {
                 return back()->with('error', 'Você não tem permissão para adicionar produtos nesta loja.');
+            }
+            
+            // Upload da foto
+            if ($request->hasFile('foto')) {
+                $path = $request->file('foto')->store('produtos', 'public');
+                $validated['foto'] = $path;
             }
             
             Produtos::create($validated);
@@ -259,6 +245,17 @@ class ProdutosController extends Controller
                 return back()->with('error', 'Loja inválida.');
             }
             
+            // Upload da nova foto
+            if ($request->hasFile('foto')) {
+                // Apagar foto antiga se existir
+                if ($produto->foto && Storage::disk('public')->exists($produto->foto)) {
+                    Storage::disk('public')->delete($produto->foto);
+                }
+                
+                $path = $request->file('foto')->store('produtos', 'public');
+                $validated['foto'] = $path;
+            }
+            
             $produto->update($validated);
             
             return redirect()->route('produtos.index')
@@ -267,6 +264,31 @@ class ProdutosController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'Erro ao atualizar produto: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    public function destroy($id){
+        try {
+            $produto = Produtos::findOrFail($id);
+            
+            if ($produto->loja->user_id !== Auth::id()) {
+                return redirect()->route('produtos.index')
+                    ->with('error', 'Você não tem permissão para excluir este produto.');
+            }
+            
+            // Apagar a foto se existir
+            if ($produto->foto && Storage::disk('public')->exists($produto->foto)) {
+                Storage::disk('public')->delete($produto->foto);
+            }
+            
+            $produto->delete();
+            
+            return redirect()->route('produtos.index')
+                ->with('success', 'Produto removido com sucesso!');
+                
+        } catch (Exception $e) {
+            return redirect()->route('produtos.index')
+                ->with('error', 'Erro ao remover produto: ' . $e->getMessage());
         }
     }
 }

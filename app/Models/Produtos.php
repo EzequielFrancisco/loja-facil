@@ -16,7 +16,8 @@ class Produtos extends Model
         'quantidade',
         'categoria',
         'sku',
-        'descricao'
+        'descricao',
+        'foto',
     ];
 
     protected $casts = [

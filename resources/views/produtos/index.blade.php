@@ -116,11 +116,19 @@
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
-                                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                                                    </svg>
-                                                </div>
+                                                <!-- Mostrar foto se existir, senão mostrar ícone padrão -->
+                                                @if($produto->foto)
+                                                    <div class="flex-shrink-0 h-10 w-10">
+                                                        <img src="{{ Storage::url($produto->foto) }}" alt="{{ $produto->nome }}" 
+                                                             class="h-10 w-10 rounded-lg object-cover">
+                                                    </div>
+                                                @else
+                                                    <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                                        </svg>
+                                                    </div>
+                                                @endif
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $produto->nome }}</div>
                                                     @if($produto->descricao)

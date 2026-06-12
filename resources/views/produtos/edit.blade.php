@@ -18,7 +18,7 @@
     <div class="py-6">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-xl">
-                <form method="POST" action="{{ route('produtos.update', $produto) }}" class="p-6">
+                <form method="POST" action="{{ route('produtos.update', $produto) }}" class="p-6"  enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -119,6 +119,23 @@
                             <x-input-label for="descricao" :value="__('Descrição')" />
                             <textarea id="descricao" name="descricao" rows="5" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Descreva o produto...">{{ old('descricao', $produto->descricao) }}</textarea>
                             <x-input-error :messages="$errors->get('descricao')" class="mt-2" />
+                        </div>
+                        <!-- foto -->
+                        <div class="col-span-1 md:col-span-2">
+                            <x-input-label for="foto" :value="__('Foto do Produto')" />
+                            
+                            @if($produto->foto)
+                                <div class="mt-2 mb-2">
+                                    <img src="{{ Storage::url($produto->foto) }}" alt="{{ $produto->nome }}" 
+                                         class="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Foto atual</p>
+                                </div>
+                            @endif
+                            
+                            <input type="file" id="foto" name="foto" accept="image/*"
+                                   class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Deixe em branco para manter a foto atual. Formatos: JPG, PNG, WEBP. Máximo 2MB.</p>
+                            <x-input-error :messages="$errors->get('foto')" class="mt-2" />
                         </div>
 
                         <!-- Informações adicionais -->
