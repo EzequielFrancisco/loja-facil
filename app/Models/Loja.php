@@ -41,7 +41,7 @@ class Loja extends Model
     // Relacionamento com produtos
     public function produtos()
     {
-        return $this->hasMany(Produto::class);
+        return $this->hasMany(Produtos::class);
     }
 
     // Scope para lojas ativas

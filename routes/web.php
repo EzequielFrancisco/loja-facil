@@ -13,8 +13,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $userId = auth()->id();
     $totalLojas = Loja::where('user_id', $userId)->count();
-    $totalProdutos = 0;
-    $valorTotalStock = 100;
+    $totalProdutos = Auth::user()->produtos()->count();
+    $valorTotalStock = Auth::user()->produtos()->selectRaw('SUM(preco * quantidade) as total')->value('total') ?? 0;
 
     return view('dashboard', compact('totalLojas','totalProdutos', 'valorTotalStock'));
 
