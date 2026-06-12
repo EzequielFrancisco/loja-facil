@@ -3,6 +3,7 @@
 use App\Models\Loja;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LojaController;
+use App\Http\Controllers\ProdutosController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,12 +36,12 @@ Route::put('lojas/{loja}', [LojaController::class, 'update'])->name('lojas.updat
 Route::delete('lojas/{loja}', [LojaController::class, 'destroy'])->name('lojas.destroy');
 
 // Rotas para Produtos
-Route::resource('produtos', ProdutoController::class);
-Route::get('produtos', [ProdutoController::class, 'index'])->name('produtos.index');
-Route::get('produtos/create', [ProdutoController::class, 'create'])->name('produtos.create');
-Route::get('produtos/{produto}', [ProdutoController::class, 'show'])->name('produtos.show');
-Route::post('produtos', [ProdutoController::class, 'store'])->name('produtos.store');
-Route::put('produtos/{produto}', [ProdutoController::class, 'update'])->name('produtos.update');
-Route::delete('produtos/{produto}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
+Route::resource('produtos', ProdutosController::class);
+Route::get('produtos', [ProdutosController::class, 'index'])->name('produtos.index');
+Route::get('produtos/create', [ProdutosController::class, 'create'])->name('produtos.create');
+Route::get('produtos/{produto}', [ProdutosController::class, 'show'])->name('produtos.show');
+Route::post('produtos', [ProdutosController::class, 'store'])->name('produtos.store');
+Route::put('produtos/{produto}', [ProdutosController::class, 'update'])->name('produtos.update');
+Route::delete('produtos/{produto}', [ProdutosController::class, 'destroy'])->name('produtos.destroy');
 
 require __DIR__.'/auth.php';
