@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Loja;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LojaController;
 use Illuminate\Support\Facades\Route;
@@ -9,7 +10,13 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $userId = auth()->id();
+    $totalLojas = Loja::where('user_id', $userId)->count();
+    $totalProdutos = 0;
+    $valorTotalStock = 100;
+
+    return view('dashboard', compact('totalLojas','totalProdutos', 'valorTotalStock'));
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
