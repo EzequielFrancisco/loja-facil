@@ -1,58 +1,173 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 1. Clonar o repositório
+git clone https://github.com/seu-usuario/lojafacil.git
+cd lojafacil
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 2. Instalar dependências PHP
+composer install
 
-## About Laravel
+# 3. Instalar dependências Node.js
+npm install
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# 4. Configurar arquivo de ambiente
+cp .env.example .env
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# 5. Gerar chave da aplicação
+php artisan key:generate
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# 6. Configurar o banco de dados no arquivo .env
+# DB_DATABASE=lojafacil
+# DB_USERNAME=root
+# DB_PASSWORD=sua_senha
 
-## Learning Laravel
+# 7. Executar migrations e seeders
+php artisan migrate --seed
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# 8. Criar link simbólico para uploads
+php artisan storage:link
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 9. Compilar assets
+npm run build
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+# 10. Iniciar servidor (em outro terminal)
+php artisan serve
 
-## Agentic Development
+# 1. Clonar o repositório
+git clone https://github.com/seu-usuario/lojafacil.git
+cd lojafacil
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+# 2. Instalar dependências PHP
+composer install
 
-```bash
-composer require laravel/boost --dev
+# 3. Instalar dependências Node.js
+npm install
 
-php artisan boost:install
-```
+# 4. Configurar arquivo de ambiente
+cp .env.example .env
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+# 5. Gerar chave da aplicação
+php artisan key:generate
 
-## Contributing
+# 6. Configurar o banco de dados no arquivo .env
+# DB_DATABASE=lojafacil
+# DB_USERNAME=root
+# DB_PASSWORD=sua_senha
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 7. Executar migrations e seeders
+php artisan migrate --seed
 
-## Code of Conduct
+# 8. Criar link simbólico para uploads
+php artisan storage:link
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 9. Compilar assets
+npm run build
 
-## Security Vulnerabilities
+# 10. Iniciar servidor (em outro terminal)
+php artisan serve
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Para desenvolvimento com hot
+npm run dev
 
-## License
+# Crie o banco de dados manualmente antes de executar as migrations:
+CREATE DATABASE lojafacil CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+📁 Estrutura do Projeto
+lojafacil/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/     # Controladores da aplicação
+│   │   │   ├── LojaController.php
+│   │   │   └── ProdutosController.php
+│   │   ├── Middleware/      # Middlewares
+│   │   └── Requests/        # Form Requests (validações)
+│   ├── Models/              # Modelos Eloquent
+│   │   ├── User.php
+│   │   ├── Loja.php
+│   │   └── Produto.php
+│   └── Policies/            # Políticas de autorização
+│       ├── LojaPolicy.php
+│       └── ProdutoPolicy.php
+├── database/
+│   ├── factories/           # Factories para testes
+│   │   ├── LojaFactory.php
+│   │   └── ProdutoFactory.php
+│   ├── migrations/          # Migrations do banco
+│   └── seeders/             # Seeders para dados iniciais
+│       ├── DatabaseSeeder.php
+│       ├── LojaSeeder.php
+│       └── ProdutoSeeder.php
+├── public/
+│   └── storage/             # Arquivos de upload (fotos)
+├── resources/
+│   └── views/               # Templates Blade
+│       ├── loja/            # Views de lojas
+│       │   ├── index.blade.php
+│       │   ├── create.blade.php
+│       │   ├── show.blade.php
+│       │   └── edit.blade.php
+│       ├── produtos/        # Views de produtos
+│       │   ├── index.blade.php
+│       │   ├── create.blade.php
+│       │   ├── show.blade.php
+│       │   └── edit.blade.php
+│       ├── auth/            # Views de autenticação
+│       ├── components/      # Componentes reutilizáveis
+│       └── dashboard.blade.php
+├── routes/
+│   └── web.php              # Rotas da aplicação
+└── .env.example             # Exemplo de configuração
+
+O sistema inclui seeders que geram dados automaticamente:
+# Executar todos os seeders
+php artisan db:seed
+
+# Executar seeder específico
+php artisan db:seed --class=LojaSeeder
+php artisan db:seed --class=ProdutoSeeder
+
+# Comandos Úteis
+
+# Iniciar servidor
+php artisan serve
+
+# Compilar assets (desenvolvimento)
+npm run dev
+
+# Compilar assets (produção)
+npm run build
+
+# Limpar cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Recriar banco do zero (ATENÇÃO: apaga todos os dados)
+php artisan migrate:fresh --seed
+
+# Criar usuário manualmente
+php artisan tinker
+> App\Models\User::create([
+    'name' => 'Admin',
+    'email' => 'admin@teste.com',
+    'password' => bcrypt('password')
+  ])
+
+  📄 Licença
+
+Este projeto está sob a licença MIT.
+✨ Agradecimentos
+
+    Laravel - Framework incrível
+
+    Tailwind CSS - Framework CSS
+
+    Chart.js - Biblioteca de gráficos
+
+
+📞 Contacto
+
+    Desenvolvido por: Ezequiel Francisco
+
+    Desafio Técnico: Mamute Africano
+    
+
+⭐ Se gostou do projeto, deixe uma estrela no GitHub!

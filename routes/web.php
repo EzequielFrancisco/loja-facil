@@ -12,12 +12,29 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $userId = auth()->id();
+    
+    // Totais para os cards
     $totalLojas = Loja::where('user_id', $userId)->count();
-    $totalProdutos = Auth::user()->produtos()->count();
-    $valorTotalStock = Auth::user()->produtos()->selectRaw('SUM(preco * quantidade) as total')->value('total') ?? 0;
-
-    return view('dashboard', compact('totalLojas','totalProdutos', 'valorTotalStock'));
-
+    $totalProdutos = auth()->user()->produtos()->count();
+    $valorTotalStock = auth()->user()->produtos()->selectRaw('SUM(preco * quantidade) as total')->value('total') ?? 0;
+    
+    $ultimosProdutos = auth()->user()->produtos()->with('loja')->latest()->limit(5)->get();
+    
+    $ultimasLojas = Loja::where('user_id', $userId)->withCount('produtos')->latest()->limit(3)->get();
+    
+    $lojas = Loja::where('user_id', $userId)->withCount('produtos')->get();
+    $lojasNomes = $lojas->pluck('nome');
+    $produtosCount = $lojas->pluck('produtos_count');
+    
+    return view('dashboard', compact(
+        'totalLojas', 
+        'totalProdutos', 
+        'valorTotalStock',
+        'ultimosProdutos',
+        'ultimasLojas',
+        'lojasNomes',
+        'produtosCount'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
