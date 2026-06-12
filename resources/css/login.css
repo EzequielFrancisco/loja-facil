@@ -1,0 +1,50 @@
+/* resources/css/app.css */
+
+.login-container {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+input:focus {
+    outline: none;
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2) !important;
+}
+
+.sm\:rounded-2xl {
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+input[type="checkbox"] {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+input[type="checkbox"]:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.sm\:max-w-md {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sm\:max-w-md:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
