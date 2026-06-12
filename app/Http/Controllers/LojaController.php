@@ -6,6 +6,9 @@ use App\Models\Loja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Exception;
+use App\Http\Requests\StoreLojaRequest;
+use App\Http\Requests\UpdateLojaRequest;
+
 
 class LojaController extends Controller
 {

@@ -7,6 +7,8 @@ use App\Models\Produtos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreProdutoRequest;
+use App\Http\Requests\UpdateProdutoRequest;
 use Exception;
 
 class ProdutosController extends Controller
