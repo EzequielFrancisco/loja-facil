@@ -22,7 +22,7 @@ class LojaController extends Controller
         return view('loja.create');
     }
 
-    public function store(Request $request){
+    /*public function store(Request $request){
         try {
             $validated = $request->validate([
                 'nome' => 'required|string|max:100',
@@ -46,7 +46,7 @@ class LojaController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'Erro ao criar loja: ' . $e->getMessage())->withInput();
         }
-    }
+    }*/
 
     public function show($id){
         try {
@@ -85,7 +85,7 @@ class LojaController extends Controller
         }
     }
 
-    public function update(Request $request, $id){
+    /*public function update(Request $request, $id){
         try {
             $loja = Loja::findOrFail($id);
             
@@ -115,7 +115,7 @@ class LojaController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'Erro ao atualizar loja: ' . $e->getMessage())->withInput();
         }
-    }
+    }*/
 
     public function destroy($id){
         try {
@@ -139,4 +139,38 @@ class LojaController extends Controller
             return redirect()->route('lojas.index')->with('error', 'Erro ao remover loja: ' . $e->getMessage());
         }
     }
+
+    public function store(StoreLojaRequest $request)
+    {
+        try {
+            $validated = $request->validated();
+            $validated['user_id'] = Auth::id();
+            
+            Loja::create($validated);
+
+            return redirect()->route('lojas.index')->with('success', 'Loja criada com sucesso!');
+            
+        } catch (Exception $e) {
+            return back()->with('error', 'Erro ao criar loja: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function update(UpdateLojaRequest $request, $id)
+    {
+        try {
+            $loja = Loja::findOrFail($id);
+            
+            if ($loja->user_id !== Auth::id()) {
+                return back()->with('error', 'Você não tem permissão para editar esta loja.');
+            }
+            
+            $loja->update($request->validated());
+            
+            return redirect()->route('lojas.index')->with('success', 'Loja atualizada com sucesso!');
+            
+        } catch (Exception $e) {
+            return back()->with('error', 'Erro ao atualizar loja: ' . $e->getMessage())->withInput();
+        }
+    }
+
 }

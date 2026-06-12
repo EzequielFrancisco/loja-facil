@@ -25,6 +25,18 @@ class ProdutosController extends Controller
             if ($request->filled('loja')) {
                 $query->where('loja_id', $request->loja);
             }
+            // Filtro por faixa de preço 
+            if ($request->filled('preco_min')) {
+                $query->where('preco', '>=', $request->preco_min);
+            }
+            if ($request->filled('preco_max')) {
+                $query->where('preco', '<=', $request->preco_max);
+            }
+
+            // Filtro por disponibilidade em stock
+            if ($request->filled('apenas_em_stock')) {
+                $query->where('quantidade', '>', 0);
+            }
             
             switch ($request->get('ordenar')) {
                 case 'nome_asc':
@@ -72,8 +84,7 @@ class ProdutosController extends Controller
         }
     }
 
-    public function create()
-    {
+    public function create(){
         try {
             $lojas = Auth::user()->lojas()->get();
             
@@ -89,8 +100,7 @@ class ProdutosController extends Controller
         }
     }
 
-    public function store(Request $request)
-    {
+    /*public function store(Request $request){
         try {
             $validated = $request->validate([
                 'nome' => 'required|string|max:255',
@@ -116,10 +126,9 @@ class ProdutosController extends Controller
             return back()->with('error', 'Erro ao cadastrar produto: ' . $e->getMessage())
                 ->withInput();
         }
-    }
+    }*/
 
-    public function show($id)
-    {
+    public function show($id){
         try {
             $produto = Produtos::with('loja')->findOrFail($id);
             
@@ -137,8 +146,7 @@ class ProdutosController extends Controller
         }
     }
 
-    public function edit($id)
-    {
+    public function edit($id){
         try {
             $produto = Produtos::findOrFail($id);
             
@@ -158,8 +166,7 @@ class ProdutosController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
+    /*public function update(Request $request, $id){
         try {
             $produto = Produtos::findOrFail($id);
             
@@ -192,10 +199,9 @@ class ProdutosController extends Controller
             return back()->with('error', 'Erro ao atualizar produto: ' . $e->getMessage())
                 ->withInput();
         }
-    }
+    }*/
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         try {
             $produto = Produtos::findOrFail($id);
             
@@ -213,6 +219,52 @@ class ProdutosController extends Controller
         } catch (Exception $e) {
             return redirect()->route('produtos.index')
                 ->with('error', 'Erro ao remover produto: ' . $e->getMessage());
+        }
+    }
+
+    public function store(StoreProdutoRequest $request){
+        try {
+            $validated = $request->validated();
+            
+            $loja = Loja::findOrFail($validated['loja_id']);
+            if ($loja->user_id !== Auth::id()) {
+                return back()->with('error', 'Você não tem permissão para adicionar produtos nesta loja.');
+            }
+            
+            Produtos::create($validated);
+            
+            return redirect()->route('produtos.index')
+                ->with('success', 'Produto cadastrado com sucesso!');
+                
+        } catch (Exception $e) {
+            return back()->with('error', 'Erro ao cadastrar produto: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function update(UpdateProdutoRequest $request, $id){
+        try {
+            $produto = Produtos::findOrFail($id);
+            
+            if ($produto->loja->user_id !== Auth::id()) {
+                return back()->with('error', 'Você não tem permissão para editar este produto.');
+            }
+            
+            $validated = $request->validated();
+            
+            $loja = Loja::findOrFail($validated['loja_id']);
+            if ($loja->user_id !== Auth::id()) {
+                return back()->with('error', 'Loja inválida.');
+            }
+            
+            $produto->update($validated);
+            
+            return redirect()->route('produtos.index')
+                ->with('success', 'Produto atualizado com sucesso!');
+                
+        } catch (Exception $e) {
+            return back()->with('error', 'Erro ao atualizar produto: ' . $e->getMessage())
+                ->withInput();
         }
     }
 }
